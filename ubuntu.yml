@@ -4,6 +4,10 @@
   connection: local
   become: true
 
+  vars:
+    user_name: jano
+    user_home: "/home/{{ user_name }}"
+
   tasks:
     - name: Ensure required packages are installed
       apt:
@@ -16,6 +20,13 @@
           - unzip
         state: present
         update_cache: yes
+
+    - name: Install uv in user mode
+      become_user: "{{ user_name }}"
+      shell: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+      args:
+        creates: "{{ user_home }}/.local/bin/uv"
 
     - name: Create test file to verify execution
       ansible.builtin.copy:

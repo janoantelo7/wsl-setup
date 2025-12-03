@@ -16,3 +16,11 @@
           - unzip
         state: present
         update_cache: yes
+
+    - name: Create test file to verify execution
+      ansible.builtin.copy:
+        content: "The ansible playbook was correctly executed."
+        dest: /home/jano/ansible_test_file.txt
+        owner: jano
+        group: jano
+        mode: '0644'

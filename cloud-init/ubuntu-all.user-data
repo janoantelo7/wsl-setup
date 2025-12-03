@@ -1,23 +1,23 @@
 #cloud-config
 
-# 1. Configuración idioma e región
+# 1. Locale and timezone settings
 locale: es_ES.UTF-8
 timezone: Europe/Madrid
 
-# 2. Configuración usuario
+# 2. User configuration
 users:
   - name: jano
     gecos: Jano Antelo
     groups: [adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,netdev]
     shell: /bin/bash
-    lock_passwd: false # permitir uso contraseña
-    sudo: ALL=(ALL) NOPASSWD:ALL # Que sudo non pida contraseña
+    lock_passwd: false # Allow password login
+    sudo: ALL=(ALL) NOPASSWD:ALL # Allow passwordless sudo
   
-# 3. Instalación paquetes
+# 3. Package update and upgrade
 package_update: true 
 package_upgrade: true
 
-# 4. Configuración WSL
+# 4. WSL configuration
 write_files:
   - path: /etc/wsl.conf
     append: true
@@ -32,5 +32,5 @@ ansible:
   package_name: ansible-core
   install_method: distro
   pull:
-    - url: https://github.com/janoantelo7/wsl-setup.git
-      playbook_names: [ubuntu.yml]
+    url: "https://github.com/janoantelo7/wsl-setup.git"
+    playbook_name: "ubuntu.yml"

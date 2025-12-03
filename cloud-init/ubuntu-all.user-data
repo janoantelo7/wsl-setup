@@ -14,12 +14,9 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL # Que sudo non pida contraseña
   
 # 3. Instalación paquetes
-package_update: true
-packages:
-  - git
-  - curl
-  - wget  
-  
+package_update: true 
+package_upgrade: true
+
 # 4. Configuración WSL
 write_files:
   - path: /etc/wsl.conf
@@ -31,10 +28,9 @@ write_files:
       [user]
       default=jano
 
-# 5. Comandos post-instalación
-runcmd:
-  - wget -O /usr/local/bin/wsl2-ssh-agent https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
-  - chmod +x /usr/local/bin/wsl2-ssh-agent
-  - echo 'eval $(/usr/local/bin/wsl2-ssh-agent)' >> /home/jano/.bashrc
-  - chown jano:jano /home/jano/.bashrc
-  
+ansible:
+  package_name: ansible-core
+  install_method: distro
+  pull:
+    - url: https://github.com/janoantelo7/wsl-setup.git
+      playbook_names: [ubuntu.yml]

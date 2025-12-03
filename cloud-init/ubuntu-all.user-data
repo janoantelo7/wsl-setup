@@ -1,0 +1,40 @@
+#cloud-config
+
+# 1. Configuración idioma e región
+locale: es_ES.UTF-8
+timezone: Europe/Madrid
+
+# 2. Configuración usuario
+users:
+  - name: jano
+    gecos: Jano Antelo
+    groups: [adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,netdev]
+    shell: /bin/bash
+    lock_passwd: false # permitir uso contraseña
+    sudo: ALL=(ALL) NOPASSWD:ALL # Que sudo non pida contraseña
+  
+# 3. Instalación paquetes
+package_update: true
+packages:
+  - git
+  - curl
+  - wget  
+  
+# 4. Configuración WSL
+write_files:
+  - path: /etc/wsl.conf
+    append: true
+    content: |
+      [boot]
+      systemd=true
+    
+      [user]
+      default=jano
+
+# 5. Comandos post-instalación
+runcmd:
+  - wget -O /usr/local/bin/wsl2-ssh-agent https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
+  - chmod +x /usr/local/bin/wsl2-ssh-agent
+  - echo 'eval $(/usr/local/bin/wsl2-ssh-agent)' >> /home/jano/.bashrc
+  - chown jano:jano /home/jano/.bashrc
+  

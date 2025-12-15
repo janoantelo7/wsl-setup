@@ -21,6 +21,22 @@
         state: present
         update_cache: yes
 
+    - name: Install wsl2-ssh-agent
+      get_url:
+        url: https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
+        dest: /usr/local/bin/wsl2-ssh-agent
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Configure wsl2-ssh-agent in .bashrc
+      become_user: "{{ user_name }}"
+      lineinfile:
+        path: "{{ user_home }}/.bashrc"
+        line: "eval $(/usr/local/bin/wsl2-ssh-agent)"
+        state: present
+        create: yes
+
     - name: Install uv in user mode
       become_user: "{{ user_name }}"
       shell: |

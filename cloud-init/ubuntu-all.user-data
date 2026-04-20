@@ -22,9 +22,6 @@ write_files:
   - path: /etc/wsl.conf
     append: true
     content: |
-      [boot]
-      systemd=true
-    
       [user]
       default=jano
 
